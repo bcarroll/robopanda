@@ -1,4 +1,3 @@
-#!/usr/bin/perl
 use warnings;
 use strict;
 use WowWee::RoboPanda;
@@ -6,7 +5,7 @@ use WowWee::RoboPanda;
 my $COMPORT = 'COM12';
 
 my $robopanda = WowWee::RoboPanda->new(
-  	-debug 				=> 1,
+		-debug 				=> 1,
 		-serial_port	=> 'COM12',
 	);
 
