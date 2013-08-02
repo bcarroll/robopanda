@@ -23,8 +23,8 @@ Introduction:
 
 Purpose:
 
-    The WowWee Robopanda is a great "off the shelf" robot for building your own robot.  This is an attempt to control
-    RoboPanda using an Arduino and Perl.
+    The WowWee Robopanda is a great "off the shelf" robot for building your own robot.  This is an attempt to interface
+    RoboPanda using Arduino, Firmata, and Perl.
     
     RoboPanda has a battery compartment which holds 8 C batteries (12v) and has a good mix of input and output sensors.
     
