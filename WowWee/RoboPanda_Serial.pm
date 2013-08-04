@@ -14,7 +14,7 @@ sub new{
   
   print "\tWowWee::RoboPanda::serial()...\n" if $self->{'debug'};
   unless ($self->{'serial_port'}){
-    print "\tserial port not specified...\n";
+    print "\tserial port not specified...\n" if $self->{'debug'};
     return(1);
   }
 
@@ -33,7 +33,7 @@ sub new{
       #
       ### TODO: support return of multiple baudrates from $self->{'serial'}->baudrate
       #
-      print "\trequested baud (" . $self->{'serial_baud'} . ") is not available.  Using " . $self->{'serial'}->baudrate . "\n";
+      print "\trequested baud (" . $self->{'serial_baud'} . ") is not available.  Using " . $self->{'serial'}->baudrate . "\n" if $self->{'debug'};
       $self->{'serial_baud'} = $self->{'serial'}->baudrate;
     }
     $self->{'serial'}->baudrate( $self->{'serial_baud'} );
@@ -46,7 +46,7 @@ sub new{
     print "\tCan't change Device_Control_Block: $^E\n";
     return(1);
   }
-  print "\tserial: " . $self->{'serial'}->user_msg() . "\n";
+  print "\tserial: " . $self->{'serial'}->user_msg() . "\n" if $self->{'debug'};
   return ($self->{'serial'});
 }
 

@@ -128,9 +128,9 @@ sub new {
   } else {
     die "ERROR: Serial port not specified\n";
   }
-  print "init>\n";
+  print "init>\n" if $self->{'debug'};
   init_sensors($self);  #initialize all output sensors to their default values
-  print "<init\n";
+  print "<init\n" if $self->{'debug'};
   return $self;
 }
 
@@ -140,7 +140,7 @@ sub init_sensors {
   print "\tWowWee::RoboPanda->init_sensors()...\n" if $self->{'debug'};
   foreach my $sensor (sort keys %{$self}){
     next unless ($sensor =~ s/_type//);
-    print "$sensor\n";
+    print "$sensor\n" if $self->{'debug'};
     my $sensorType = $self->{$sensor . "_type"};
     if ($sensorType eq 'A'){
       $self->writeAnalog($sensor, $self->{$sensor});
@@ -208,7 +208,7 @@ sub headlr {
   my ($self, $reqPos) = @_;
   print "\tWowWee::RoboPanda->headlr($reqPos)...\n" if $self->{'debug'};
   if ( $reqPos > 100 || $reqPos < 1){
-    print "\trequested position ($reqPos) is not an acceptable percentage 1-100";
+    print "\trequested position ($reqPos) is not an acceptable percentage 1-100" if $self->{'debug'};
     return(1);
   }
   print "\trequested position=$reqPos\n" if $self->{'debug'};
@@ -241,10 +241,10 @@ sub headud {
   my ($self, $reqPos) = @_;
   print "\tWowWee::RoboPanda->headud($reqPos)...\n" if $self->{'debug'};
   $reqPos /= 100;
-  print "\t\$reqPos=$reqPos\n";
-  print "\theadud_min=" . $self->{'headud_min'} . "\n";
-  print "\theadud_max=" . $self->{'headud_max'} . "\n";
-  print "\t\$reqPos=" . ($self->{'headud_min'} + ( ($self->{'headud_max'} - $self->{'headud_min'}) * $reqPos )) . "\n";
+  print "\t\$reqPos=$reqPos\n" if $self->{'debug'};
+  print "\theadud_min=" . $self->{'headud_min'} . "\n" if $self->{'debug'};
+  print "\theadud_max=" . $self->{'headud_max'} . "\n" if $self->{'debug'};
+  print "\t\$reqPos=" . ($self->{'headud_min'} + ( ($self->{'headud_max'} - $self->{'headud_min'}) * $reqPos )) . "\n" if $self->{'debug'};
   #
   #move headlr to $reqPos
   #
@@ -255,13 +255,13 @@ sub headud {
 sub checkReqPos{
   #test if requested position is within the minimum and maximum range
   my ($self, $sensor, $reqPos) = @_;
-  print "\tWowWee::RoboPanda->checkReqPos($sensor)\n";
+  print "\tWowWee::RoboPanda->checkReqPos($sensor)\n" if $self->{'debug'};
   if ($self->{$sensor . "_min"}){
     if ($reqPos < ($self->{$sensor . "_min"})) {
-      print "requested position $reqPos is less than $sensor" . "_min (" . $self->{$sensor . "_min"} . ")\n";
+      print "requested position $reqPos is less than $sensor" . "_min (" . $self->{$sensor . "_min"} . ")\n" if $self->{'debug'};
       return(1);
     } elsif ($reqPos > ($self->{$sensor . "_max"})){
-      print "requested position $reqPos is greater than $sensor" . "_max (" . $self->{$sensor . "_max"} . ")\n";
+      print "requested position $reqPos is greater than $sensor" . "_max (" . $self->{$sensor . "_max"} . ")\n" if $self->{'debug'};
       return(1);
     }
   }
