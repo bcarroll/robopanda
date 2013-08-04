@@ -42,6 +42,7 @@ Purpose:
       LED                   - Hands, Eyes, Chest.  
       Speaker               - Chest
       DC Motor              - Hips, Shoulders, Upper arms, Head, Ears, Eye brows
+      InfraRed emitter			- Nose
 
       
 References:
