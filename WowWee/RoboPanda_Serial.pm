@@ -4,19 +4,21 @@ use strict;use Exporter;use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAG
 sub new{
   my (%args) = @_;
   my $self;
-  $self->{'debug'}    = $args{'-debug'}        || 0;
+  $self->{'debug'}            = $args{'-debug'}        || 0;
   $self->{'serial_port'}      = $args{'-port'}         || undef;
-  $self->{'serial_quiet'}   = $args{'-quiet'}        || undef;
+  $self->{'serial_quiet'}     = $args{'-quiet'}        || undef;
   $self->{'serial_databits'}  = $args{'-databits'}     || 8;
   $self->{'serial_baudrate'}  = $args{'-baudrate'}     || 9600;
   $self->{'serial_stopbits'}  = $args{'-stopbits'}     || 1;
   $self->{'serial_parity'}    = $args{'-parity'}       || "none";
+  
   print "\tWowWee::RoboPanda::serial()...\n" if $self->{'debug'};
   unless ($self->{'serial_port'}){
     print "\tserial port not specified...\n";
     return(1);
   }
 
+  #import Serial Port module based on host Operating System
   if ($^O =~ /win/i){
     use Win32::SerialPort qw( :STAT 0.19 );
     $self->{'serial'} = new Win32::SerialPort($self->{'serial_port'}, 1);
