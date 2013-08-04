@@ -104,15 +104,15 @@ sub new {
   $self->{'serial_baud'}				= $args{'-serial_baud'}		        || 9600;
   $self->{'serial_parity'}			= $args{'-serial_parity'}	   	    || 'none';
   $self->{'serial_stopbits'}		= $args{'-serial_stopbits'}       || 1;
-  $self->{'serial_port'}				= $args{'-serial_port'}		        || 'COM9';
+  $self->{'serial_port'}				= $args{'-serial_port'}		        || undef;
   $self->{'serial_databits'}		= $args{'-serial_databits'}		    || 8;
   
-  if ($self->{'debug'}){
-		print "\tinitialization variables...\n";
-		#foreach my $element (sort keys %{$self}){
-		#	print "\t$element - " . $self->{$element} . "\n";
-		#}
-	}
+  #if ($self->{'debug'}){
+	#	print "\tinitialization variables...\n";
+	#	foreach my $element (sort keys %{$self}){
+	#		print "\t$element - " . $self->{$element} . "\n";
+	#	}
+	#}
   
   $self->{'serial'} = WowWee::RoboPanda_Serial::new(
   	-debug 			=> $self->{'debug'},
