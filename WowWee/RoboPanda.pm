@@ -113,16 +113,18 @@ sub new {
 	#		print "\t$element - " . $self->{$element} . "\n";
 	#	}
 	#}
-  
-  $self->{'serial'} = WowWee::RoboPanda_Serial::new(
-  	-debug 			=> $self->{'debug'},
-		-port 			=> $self->{'serial_port'},
-		-databits		=> $self->{'serial_databits'},
-		-baudrate		=> $self->{'serial_baudrate'},
-		-stopbits		=> $self->{'serial_stopbits'},
-		-parity			=> $self->{'serial_parity'},
-	);
-  
+  if ($self->{'serial_port'}){
+  	$self->{'serial'} = WowWee::RoboPanda_Serial::new(
+  		-debug 			=> $self->{'debug'},
+			-port 			=> $self->{'serial_port'},
+			-databits		=> $self->{'serial_databits'},
+			-baudrate		=> $self->{'serial_baudrate'},
+			-stopbits		=> $self->{'serial_stopbits'},
+			-parity			=> $self->{'serial_parity'},
+		);
+	} else {
+		die "ERROR: Serial port not specified\n";
+	}
   print "init>\n";
   init_sensors($self);
   print "<init\n";
