@@ -19,6 +19,7 @@ my $PWMO		= 'PO'; #Digital output with optional PWM output (LEDs, etc...)
 my $PWM			= 'P'; 	#PWM output (audio, ir, etc...)
 
 sub new {
+	#create a new RoboPanda object with specifed sensor values, or use default values if not specified
   my ($class, %args) = @_;
   my $self = bless ({},$class);
 
@@ -108,12 +109,14 @@ sub new {
   $self->{'serial_databits'}		= $args{'-serial_databits'}		    || 8;
   
   #if ($self->{'debug'}){
+  #	#display default sensor values
 	#	print "\tinitialization variables...\n";
 	#	foreach my $element (sort keys %{$self}){
 	#		print "\t$element - " . $self->{$element} . "\n";
 	#	}
 	#}
-  if ($self->{'serial_port'}){
+	
+  if ($self->{'serial_port'}){ #exit with an error if a serial port is not defined
   	$self->{'serial'} = WowWee::RoboPanda_Serial::new(
   		-debug 			=> $self->{'debug'},
 			-port 			=> $self->{'serial_port'},
@@ -126,12 +129,13 @@ sub new {
 		die "ERROR: Serial port not specified\n";
 	}
   print "init>\n";
-  init_sensors($self);
+  init_sensors($self);  #initialize all output sensors to their default values
   print "<init\n";
   return $self;
 }
 
 sub init_sensors {
+	#write default values to all output sensors
 	my ($self, undef) = @_;
 	print "\tWowWee::RoboPanda->init_sensors()...\n" if $self->{'debug'};
 	foreach my $sensor (sort keys %{$self}){
@@ -148,6 +152,7 @@ sub init_sensors {
 }
 
 sub updateState {
+	#read all analog and digital sensors and update state variables with current values
   my ($self, $sensor) = @_;
 	print "WowWee::RoboPanda->updateState($sensor)...\n" if $self->{'debug'};
   if ($sensor eq 'all'){
@@ -171,30 +176,30 @@ sub updateState {
 }
 
 sub readAnalog {
+	#read Analog sensor value and assign results to $self->{$sensor}
 	my ($self, $sensor) = @_;
 	print "\tWowWee::RoboPanda->readAnalog($sensor)...\n" if $self->{'debug'};
-	#read Analog sensor value and assign results to $self->{$sensor}
 	return $self->{$sensor};
 }
 
 sub readDigital {
+	#read Digital sensor and assign results to $self->{$sensor}
 	my ($self, $sensor) = @_;
 	print "\tWowWee::RoboPanda->readDigital($sensor)...\n" if $self->{'debug'};
-	#read Digital sensor and assign results to $self->{$sensor}
 	return undef;
 }
 
 sub writeAnalog {
+	#write Analog sensor value
 	my ($self, $sensor, $value) = @_;
 	print "\tWowWee::RoboPanda->writeAnalog($sensor, $value)...\n" if $self->{'debug'};
-	#write Analog sensor value
 	return undef;
 }
 
 sub writeDigital {
+	#write Digital sensor value
 	my ($self, $sensor, $value) = @_;
 	print "\tWowWee::RoboPanda->writeDigital($sensor, $value)...\n" if $self->{'debug'};
-	#write Digital sensor and assign results to $self->{$sensor}
 	return undef;
 }
 
@@ -248,6 +253,7 @@ sub headud {
 }
 
 sub checkReqPos{
+	#test if requested position is within the minimum and maximum range
 	my ($self, $sensor, $reqPos) = @_;
 	print "\tWowWee::RoboPanda->checkReqPos($sensor)\n";
 	if ($self->{$sensor . "_min"}){
