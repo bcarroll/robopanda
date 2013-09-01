@@ -117,7 +117,7 @@ sub new {
   #}
 
   if ($self->{'serial_port'}){ #exit with an error if a serial port is not defined
-    $self->{'serial'} = Device::Firmata->open($self->{'serial_port'} or die "Could not connect to Firmata serial port\n";
+    $self->{'serial'} = Device::Firmata->open($self->{'serial_port'}) or die "Could not connect to Firmata serial port\n";
   } else {
     die "ERROR: Serial port not specified\n";
   }
