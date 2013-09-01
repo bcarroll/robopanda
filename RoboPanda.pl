@@ -2,11 +2,11 @@ use warnings;
 use strict;
 use WowWee::RoboPanda;
 
-my $COMPORT = 'COM12';
+my $SerialPort = 'COM12';
 
 my $robopanda = WowWee::RoboPanda->new(
     -debug          => 1,
-    -serial_port    => 'COM12',
+    -serial_port    => $SerialPort,
   );
 
 #$robopanda->headlr(1); #move headlr to 1% (far left)
