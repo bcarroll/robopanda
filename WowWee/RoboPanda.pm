@@ -1,11 +1,15 @@
 package WowWee::RoboPanda;
 
-require WowWee::RoboPanda_Serial;
-
 use strict;
 use Exporter;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
-use Time::HiRes;
+use Time::HiRes 'sleep';
+
+use Device::Firmata::Constants ":all";
+use Device::Firmata;
+$|=1;
+
+
 
 our $VERSION      = 1.00;
 our @ISA          = qw(Exporter);
@@ -102,12 +106,8 @@ sub new {
   $self->{'hand_leftud_min'}    = $args{'-hand_leftud_min'}       || 0;
   $self->{'hand_leftud_max'}    = $args{'-hand_leftud_max'}       || 0;
 
-  $self->{'serial_baud'}        = $args{'-serial_baud'}           || 9600;
-  $self->{'serial_parity'}      = $args{'-serial_parity'}         || 'none';
-  $self->{'serial_stopbits'}    = $args{'-serial_stopbits'}       || 1;
   $self->{'serial_port'}        = $args{'-serial_port'}           || undef;
-  $self->{'serial_databits'}    = $args{'-serial_databits'}       || 8;
-
+ 
   #if ($self->{'debug'}){
   # #display default sensor values
   # print "\tinitialization variables...\n";
@@ -117,14 +117,7 @@ sub new {
   #}
 
   if ($self->{'serial_port'}){ #exit with an error if a serial port is not defined
-    $self->{'serial'} = WowWee::RoboPanda_Serial::new(
-      -debug      => $self->{'debug'},
-      -port       => $self->{'serial_port'},
-      -databits   => $self->{'serial_databits'},
-      -baudrate   => $self->{'serial_baudrate'},
-      -stopbits   => $self->{'serial_stopbits'},
-      -parity     => $self->{'serial_parity'},
-    );
+    $self->{'serial'} = Device::Firmata->open($self->{'serial_port'} or die "Could not connect to Firmata serial port\n";
   } else {
     die "ERROR: Serial port not specified\n";
   }
