@@ -2,7 +2,7 @@ use warnings;
 use strict;
 use WowWee::RoboPanda;
 
-my $SerialPort = 'COM12';
+my $SerialPort = 'COM14';
 
 my $robopanda = WowWee::RoboPanda->new(
     -debug          => 1,

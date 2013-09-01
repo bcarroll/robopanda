@@ -5,6 +5,7 @@ use Exporter;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
 use Time::HiRes 'sleep';
 
+use Data::Dumper;
 use Device::Firmata::Constants ":all";
 use Device::Firmata;
 $|=1;
@@ -115,9 +116,15 @@ sub new {
   #   print "\t$element - " . $self->{$element} . "\n";
   # }
   #}
-
+  
+  print "\tInitializing serial port communication\n" if $self->{'debug'};
   if ($self->{'serial_port'}){ #exit with an error if a serial port is not defined
-    $self->{'serial'} = Device::Firmata->open($self->{'serial_port'}) or die "Could not connect to Firmata serial port\n";
+  #  $self->{'serial'} = Device::Firmata->open( $self->{'serial_port'} ) || die "Could not connect to Firmata serial port\n";
+  #  if ( $self->{'debug'} ){
+  #  	foreach my $key ( keys(%{$self->{'serial'}}) ){
+  #  		print "\t\t$key\n";
+  #  	}
+  #	}
   } else {
     die "ERROR: Serial port not specified\n";
   }
