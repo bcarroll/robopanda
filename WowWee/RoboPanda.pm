@@ -339,6 +339,7 @@ sub home{
   } elsif ($sensor eq 'palm_left_led'){
 
   } elsif ($sensor eq 'palm_right_led'){
+
   } elsif ($sensor eq 'leg_leftfb'){
 
   } elsif ($sensor eq 'leg_rightfb'){
