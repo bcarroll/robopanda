@@ -1,3 +1,8 @@
+############################################################
+# Perl module for interfacing the WowWee Robopanda Robot
+# Using Arduino Mega with StandardFirmata sketch
+############################################################
+
 package WowWee::RoboPanda;
 
 use strict;
@@ -9,8 +14,6 @@ use Data::Dumper;
 use Device::Firmata::Constants ":all";
 use Device::Firmata;
 $|=1;
-
-
 
 our $VERSION      = 1.00;
 our @ISA          = qw(Exporter);
