@@ -32,7 +32,7 @@ sub new {
   print "WowWee::RoboPanda->new()...\n" if $self->{'debug'};
 
   $self->{'headlr_type'}        = $args{'-headlr_type'}           || $ANALOG_IN;
-  $self->{'headlr'}             = $args{'-headlr'}                || 850;
+  $self->{'headlr'}             = $args{'-headlr'}                || readAnalog($self,'headlr');
   $self->{'headlr_min'}         = $args{'-headlr_min'}            || 800;
   $self->{'headlr_max'}         = $args{'-headlr_max'}            || 900;
   #$self->{'headl_out'}          = $args{'-headl_out'}             || 22; #HEAD-L OUTPUT PIN
@@ -40,7 +40,7 @@ sub new {
   #$self->{'headlr_in'}           = $args{'-headlr_in'}            || ; #HEAD-LR INPUT PIN
 
   $self->{'headud_type'}        = $args{'-headud_type'}           || $ANALOG_IN;
-  $self->{'headud'}             = $args{'-headud'}                || 850;
+  $self->{'headud'}             = $args{'-headud'}                || readAnalog($self,'headud');
   $self->{'headud_min'}         = $args{'-headud_min'}            || 800;
   $self->{'headud_max'}         = $args{'-headud_max'}            || 900;
   #$self->{'headu_out'}          = $args{'-headu_out'}             || 26; #HEAD-U OUTPUT PIN
@@ -56,8 +56,8 @@ sub new {
 
 
   $self->{'accelerometer_type'} = $args{'-accelerometer_type'}    || $ANALOG_IN;
-  $self->{'accelerometer_x'}    = 0;
-  $self->{'accelerometer_y'}    = 0;
+  $self->{'accelerometer_x'}    = readAnalog($self,'accelerometer_x');
+  $self->{'accelerometer_y'}    = readAnalog($self,'accelerometer_y');
   $self->{'accelerometer_x_in'} = $args{'accelerometer_x_in'}     || 'A0'; #TILT_X INPUT PIN
   $self->{'accelerometer_y_in'} = $args{'accelerometer_y_in'}     || 'A1'; #TILT_Y INPUT PIN
 
@@ -98,7 +98,7 @@ sub new {
   #$self->{'palm_right_led_out'} = $args{'-palm_right_led_out'}    || ; #R-PALM-LED OUTPUT PIN
 
   $self->{'earfb_type'}         = $args{'-earfb_type'}            || $ANALOG_IN;
-  $self->{'earfb'}              = $args{'-earfb'}                 || 0;
+  $self->{'earfb'}              = $args{'-earfb'}                 || readAnalog($self,'earfb');
   $self->{'earfb_min'}          = $args{'-earfb_min'}             || 0;
   $self->{'earfb_max'}          = $args{'-earfb_max'}             || 0;
   #$self->{'earf_out'}           = $args{'-earf_out'}              || ; #EAR-F OUTPUT PIN
@@ -107,7 +107,7 @@ sub new {
   #$self->{'eard_in'}            = $args{'-eard_in'}               || ; #EARD INPUT PIN
 
   $self->{'leg_rightfb_type'}   = $args{'-leg_rightfb_type'}      || $ANALOG_IN;
-  $self->{'leg_rightfb'}        = $args{'-leg_rightfb'}           || 0;
+  $self->{'leg_rightfb'}        = $args{'-leg_rightfb'}           || readAnalog($self,'leg_rightfb');
   $self->{'leg_rightfb_min'}    = $args{'-leg_rightfb_min'}       || 0;
   $self->{'leg_rightfb_max'}    = $args{'-leg_rightfb_max'}       || 0;
   #$self->{'leg_rightf_out'}     = $args{'-leg_rightf_out'}        || ; #R-LEG-F OUTPUT PIN
@@ -115,7 +115,7 @@ sub new {
   #$self->{'leg_rightfb_in'}      = $args{'-leg_rightfb_in'}       || ; #R-LEG-FB INPUT PIN
 
   $self->{'leg_leftfb_type'}    = $args{'-leg_leftfb_type'}       || $ANALOG_IN;
-  $self->{'leg_leftfb'}         = $args{'-leg_leftfb'}            || 0;
+  $self->{'leg_leftfb'}         = $args{'-leg_leftfb'}            || readAnalog($self,'leg_leftfb');
   $self->{'leg_leftfb_min'}     = $args{'-leg_leftfb_min'}        || 0;
   $self->{'leg_leftfb_max'}     = $args{'-leg_leftfb_max'}        || 0;
   #$self->{'leg_leftf_out'}      = $args{'-leg_leftf_out'}         || ; #L-LEG-F OUTPUT PIN
@@ -123,7 +123,7 @@ sub new {
   #$self->{'leg_leftfb_in'}      = $args{'-leg_leftfb_in'}         || ; #L-LEG-FB INPUT PIN
 
   $self->{'arm_leftoc_type'}    = $args{'-arm_leftoc_type'}       || $ANALOG_IN;
-  $self->{'arm_leftoc'}         = $args{'-arm_leftoc'}            || 0;
+  $self->{'arm_leftoc'}         = $args{'-arm_leftoc'}            || readAnalog($self,'arm_leftoc');
   $self->{'arm_leftoc_min'}     = $args{'-arm_leftoc_min'}        || 0;
   $self->{'arm_leftoc_max'}     = $args{'-arm_leftoc_max'}        || 0;
   #$self->{'arm_lefto_out'}      = $args{'-arm_lefto_out'}         || ; #L-ARM-O OUTPUT PIN
@@ -131,7 +131,7 @@ sub new {
   #$self->{'arm_leftoc_in'}      = $args{'-arm_leftoc_in'}         || ; #L-ARM-OC INPUT PIN
 
   $self->{'hand_leftud_type'}   = $args{'-hand_leftud_type'}      || $ANALOG_IN;
-  $self->{'hand_leftud'}        = $args{'-hand_leftud'}           || 0;
+  $self->{'hand_leftud'}        = $args{'-hand_leftud'}           || readAnalog($self,'hand_leftud');
   $self->{'hand_leftud_min'}    = $args{'-hand_leftud_min'}       || 0;
   $self->{'hand_leftud_max'}    = $args{'-hand_leftud_max'}       || 0;
   #$self->{'hand_leftu_out'}     = $args{'-hand_leftu_out'}        || ; #L-HAND-U OUTPUT PIN
@@ -139,7 +139,7 @@ sub new {
   #$self->{'hand_leftud_in'}     = $args{'-hand_leftud_in'}        || ; #L-HAND-UD INPUT PIN
 
   $self->{'arm_rightoc_type'}   = $args{'-arm_rightoc_type'}      || $ANALOG_IN;
-  $self->{'arm_rightoc'}        = $args{'-arm_rightoc'}           || 0;
+  $self->{'arm_rightoc'}        = $args{'-arm_rightoc'}           || readAnalog($self,'arm_rightoc');
   $self->{'arm_rightoc_min'}    = $args{'-arm_rightoc_min'}       || 0;
   $self->{'arm_rightoc_max'}    = $args{'-arm_rightoc_max'}       || 0;
   #$self->{'arm_righto_out'}     = $args{'-arm_righto_out'}       || ; #R-ARM-O OUTPUT PIN
@@ -147,7 +147,7 @@ sub new {
   #$self->{'arm_rightoc_in'}     = $args{'-arm_rightoc_in'}       || ; #R-ARM-OC INPUT PIN
 
   $self->{'hand_rightud_type'}  = $args{'-hand_rightud_type'}     || $ANALOG_IN;
-  $self->{'hand_rightud'}       = $args{'-hand_rightud'}          || 0;
+  $self->{'hand_rightud'}       = $args{'-hand_rightud'}          || readAnalog($self,'hand_rightud');
   $self->{'hand_rightud_min'}   = $args{'-hand_rightud_min'}      || 0;
   $self->{'hand_rightud_max'}   = $args{'-hand_rightud_max'}      || 0;
   #$self->{'hand_rightu_out'}    = $args{'-hand_rightu_out'}       || ; #R-HAND-U OUTPUT PIN
@@ -220,7 +220,7 @@ sub readAnalog {
   #read Analog sensor value and assign results to $self->{$sensor}
   my ($self, $sensor) = @_;
   print "\tWowWee::RoboPanda->readAnalog($sensor)...\n" if $self->{'debug'};
-  return $self->{$sensor};
+  #return $self->{$sensor};
 }
 
 sub readDigital {
@@ -313,7 +313,7 @@ sub home{
   #move to home position
   my ($self, $sensor) = @_;
   print "\tWowWee::RoboPanda->home($sensor)\n" if $self->{'debug'};
-  WowWee::RoboPanda->init_sensors()...
+
   if ($sensor eq 'accelerometer'){
     print "\t\tNo home position for $sensor\n" if $self->{'debug'};
   } elsif ($sensor eq 'headlr'){
