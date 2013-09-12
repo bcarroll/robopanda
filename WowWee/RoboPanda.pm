@@ -14,6 +14,7 @@ use Data::Dumper;
 use Device::Firmata::Constants ":all";
 use Device::Firmata;
 $|=1;
+$Device::Firmata::DEBUG = 1;
 
 our $VERSION      = 1.00;
 our @ISA          = qw(Exporter);
@@ -33,36 +34,49 @@ sub new {
 
   $self->{'debug'}              = $args{'-debug'}                 || 0;
   print "WowWee::RoboPanda->new()...\n" if $self->{'debug'};
+	
+	$self->{'serial_port'}        = $args{'-serial_port'}           || undef;
+	
+	print "\tInitializing serial port communication\n" if $self->{'debug'};
+  if ($self->{'serial_port'}){ #exit with an error if a serial port is not defined
+    $self->{'serial'} = Device::Firmata->open( $self->{'serial_port'} ) || die "Could not connect to Firmata via serial\n";
+  #  if ( $self->{'debug'} ){
+  #   foreach my $key ( keys(%{$self->{'serial'}}) ){
+  #     print "\t\t$key\n";
+  #   }
+  #  }
+  } else {
+    die "ERROR: Serial port not specified\n";
+  }
 
   $self->{'headlr_type'}        = $args{'-headlr_type'}           || $ANALOG_IN;
   $self->{'headlr'}             = $args{'-headlr'}                || readAnalog($self,'headlr');
   $self->{'headlr_min'}         = $args{'-headlr_min'}            || 800;
   $self->{'headlr_max'}         = $args{'-headlr_max'}            || 900;
-  #$self->{'headl_out'}          = $args{'-headl_out'}             || 22; #HEAD-L OUTPUT PIN
-  #$self->{'headr_out'}          = $args{'-headr_out'}             || 24; #HEAD-R OUTPUT PIN
-  #$self->{'headlr_in'}           = $args{'-headlr_in'}            || ; #HEAD-LR INPUT PIN
+  $self->{'headl_out'}          = $args{'-headl_out'}             || 29; #HEAD-L OUTPUT PIN
+  $self->{'headr_out'}          = $args{'-headr_out'}             || 27; #HEAD-R OUTPUT PIN
+  $self->{'headlr_in'}          = $args{'-headlr_in'}             || 'A10'; #HEAD-LR INPUT PIN
 
   $self->{'headud_type'}        = $args{'-headud_type'}           || $ANALOG_IN;
   $self->{'headud'}             = $args{'-headud'}                || readAnalog($self,'headud');
   $self->{'headud_min'}         = $args{'-headud_min'}            || 800;
   $self->{'headud_max'}         = $args{'-headud_max'}            || 900;
-  #$self->{'headu_out'}          = $args{'-headu_out'}             || 26; #HEAD-U OUTPUT PIN
-  #$self->{'headd_out'}          = $args{'-headd_out'}             || 28; #HEAD-D OUTPUT PIN
-  #$self->{'headud_in'}           = $args{'-headud_in'}            || ; #HEAD-UD INPUT PIN
+  $self->{'headu_out'}          = $args{'-headu_out'}             || 34; #HEAD-U OUTPUT PIN
+  $self->{'headd_out'}          = $args{'-headd_out'}             || 36; #HEAD-D OUTPUT PIN
+  $self->{'headud_in'}          = $args{'-headud_in'}             || 'A13'; #HEAD-UD INPUT PIN
 
   $self->{'eyebrow_type'}       = $args{'-eyebrow_type'}          || $DIGITAL_IN;
   $self->{'eyebrow'}            = $args{'-eyebrow'}               || 0;
-  #$self->{'eyebrowu_out'}       = $args{'-eyebrowu_out'}          || 30; #EYEU OUTPUT PIN
-  #$self->{'eyebrowd_out'}       = $args{'-eyebrowd_out'}          || 32; #EYED OUTPUT PIN
-  #$self->{'eyebrowu_in'}        = $args{'-eyebrowu_in'}           || ; #EYEU INPUT PIN (Limit Switch)
-  #$self->{'eyebrowd_in'}        = $args{'-eyebrowd_in'}           || ; #EYED INPUT PIN (Limit Switch)
-
+  $self->{'eyebrowu_out'}       = $args{'-eyebrowu_out'}          || 33; #EYEU OUTPUT PIN
+  $self->{'eyebrowd_out'}       = $args{'-eyebrowd_out'}          || 31; #EYED OUTPUT PIN
+  $self->{'eyebrowu_in'}        = $args{'-eyebrowu_in'}           || 41; #EYEU INPUT PIN (Limit Switch)
+  $self->{'eyebrowd_in'}        = $args{'-eyebrowd_in'}           || 43; #EYED INPUT PIN (Limit Switch)
 
   $self->{'accelerometer_type'} = $args{'-accelerometer_type'}    || $ANALOG_IN;
   $self->{'accelerometer_x'}    = readAnalog($self,'accelerometer_x');
   $self->{'accelerometer_y'}    = readAnalog($self,'accelerometer_y');
-  $self->{'accelerometer_x_in'} = $args{'accelerometer_x_in'}     || 'A0'; #TILT_X INPUT PIN
-  $self->{'accelerometer_y_in'} = $args{'accelerometer_y_in'}     || 'A1'; #TILT_Y INPUT PIN
+  $self->{'accelerometer_x_in'} = $args{'accelerometer_x_in'}     || 'A9'; #TILT_X INPUT PIN
+  $self->{'accelerometer_y_in'} = $args{'accelerometer_y_in'}     || 'A8'; #TILT_Y INPUT PIN
 
   #$self->{'cart_sw_type'}      = $args{'-cart_sw_type'}          || $DIGITAL_IN;
   #$self->{'cart_sw'}           = 0;
@@ -82,7 +96,7 @@ sub new {
 
   $self->{'chest_led_type'}     = $args{'-chest_led'}             || $PWM;
   $self->{'chest_led'}          = $args{'-chest_led'}             || 0;
-  #$self->{'chest_led_out'}      = $args{'-chest_led_out'}         || ; #CHEST-LED OUTPUT PIN
+  $self->{'chest_led_out'}      = $args{'-chest_led_out'}         || 52; #FRONT-LED OUTPUT PIN
 
   $self->{'ir_trans_type'}      = $args{'-ir_trans_type'}         || $PWM;
   $self->{'ir_trans'}           = 0;
@@ -94,7 +108,7 @@ sub new {
 
   $self->{'palm_left_led_type'} = $args{'-palm_left_led_type'}    || $PWM;
   $self->{'palm_left_led'}      = $args{'-palm_left_led'}         || 0;
-  #$self->{'palm_left_led_out'}  = $args{'-palm_left_led_out'}     || ; #L-PALM-LED OUTPUT PIN
+  $self->{'palm_left_led_out'}  = $args{'-palm_left_led_out'}     || 35; #L-PALM-LED OUTPUT PIN
 
   $self->{'palm_right_led_type'}= $args{'-palm_right_led_type'}   || $PWM;
   $self->{'palm_right_led'}     = $args{'-palm_right_led'}        || 0;
@@ -104,60 +118,58 @@ sub new {
   $self->{'earfb'}              = $args{'-earfb'}                 || readAnalog($self,'earfb');
   $self->{'earfb_min'}          = $args{'-earfb_min'}             || 0;
   $self->{'earfb_max'}          = $args{'-earfb_max'}             || 0;
-  #$self->{'earf_out'}           = $args{'-earf_out'}              || ; #EAR-F OUTPUT PIN
-  #$self->{'earb_out'}           = $args{'-earb_out'}              || ; #EAR-B OUTPUT PIN
-  #$self->{'earu_in'}            = $args{'-earu_in'}               || ; #EARU INPUT PIN
-  #$self->{'eard_in'}            = $args{'-eard_in'}               || ; #EARD INPUT PIN
+  $self->{'earf_out'}           = $args{'-earf_out'}              || 25; #EAR-F OUTPUT PIN
+  $self->{'earb_out'}           = $args{'-earb_out'}              || 23; #EAR-B OUTPUT PIN
+  $self->{'earu_in'}            = $args{'-earu_in'}               || 37; #EARU INPUT PIN
+  $self->{'eard_in'}            = $args{'-eard_in'}               || 39; #EARD INPUT PIN
 
   $self->{'leg_rightfb_type'}   = $args{'-leg_rightfb_type'}      || $ANALOG_IN;
   $self->{'leg_rightfb'}        = $args{'-leg_rightfb'}           || readAnalog($self,'leg_rightfb');
   $self->{'leg_rightfb_min'}    = $args{'-leg_rightfb_min'}       || 0;
   $self->{'leg_rightfb_max'}    = $args{'-leg_rightfb_max'}       || 0;
-  #$self->{'leg_rightf_out'}     = $args{'-leg_rightf_out'}        || ; #R-LEG-F OUTPUT PIN
-  #$self->{'leg_rightb_out'}     = $args{'-leg_rightb_out'}        || ; #R-LEG-B OUTPUT PIN
-  #$self->{'leg_rightfb_in'}      = $args{'-leg_rightfb_in'}       || ; #R-LEG-FB INPUT PIN
+  $self->{'leg_rightf_out'}     = $args{'-leg_rightf_out'}        || 22; #R-LEG-F OUTPUT PIN
+  $self->{'leg_rightb_out'}     = $args{'-leg_rightb_out'}        || 24; #R-LEG-B OUTPUT PIN
+  $self->{'leg_rightfb_in'}      = $args{'-leg_rightfb_in'}       || 'A15'; #R-LEG-FB INPUT PIN
 
   $self->{'leg_leftfb_type'}    = $args{'-leg_leftfb_type'}       || $ANALOG_IN;
   $self->{'leg_leftfb'}         = $args{'-leg_leftfb'}            || readAnalog($self,'leg_leftfb');
   $self->{'leg_leftfb_min'}     = $args{'-leg_leftfb_min'}        || 0;
   $self->{'leg_leftfb_max'}     = $args{'-leg_leftfb_max'}        || 0;
-  #$self->{'leg_leftf_out'}      = $args{'-leg_leftf_out'}         || ; #L-LEG-F OUTPUT PIN
-  #$self->{'leg_leftb_out'}      = $args{'-leg_leftb_out'}         || ; #L-LEG-B OUTPUT PIN
-  #$self->{'leg_leftfb_in'}      = $args{'-leg_leftfb_in'}         || ; #L-LEG-FB INPUT PIN
+  $self->{'leg_leftf_out'}      = $args{'-leg_leftf_out'}         || 46; #L-LEG-F OUTPUT PIN
+  $self->{'leg_leftb_out'}      = $args{'-leg_leftb_out'}         || 48; #L-LEG-B OUTPUT PIN
+  $self->{'leg_leftfb_in'}      = $args{'-leg_leftfb_in'}         || 'A14'; #L-LEG-FB INPUT PIN
 
   $self->{'arm_leftoc_type'}    = $args{'-arm_leftoc_type'}       || $ANALOG_IN;
   $self->{'arm_leftoc'}         = $args{'-arm_leftoc'}            || readAnalog($self,'arm_leftoc');
   $self->{'arm_leftoc_min'}     = $args{'-arm_leftoc_min'}        || 0;
   $self->{'arm_leftoc_max'}     = $args{'-arm_leftoc_max'}        || 0;
-  #$self->{'arm_lefto_out'}      = $args{'-arm_lefto_out'}         || ; #L-ARM-O OUTPUT PIN
-  #$self->{'arm_leftc_out'}      = $args{'-arm_leftc_out'}         || ; #L-ARM-C OUTPUT PIN
-  #$self->{'arm_leftoc_in'}      = $args{'-arm_leftoc_in'}         || ; #L-ARM-OC INPUT PIN
+  $self->{'arm_lefto_out'}      = $args{'-arm_lefto_out'}         || 40; #L-ARM-O OUTPUT PIN
+  $self->{'arm_leftc_out'}      = $args{'-arm_leftc_out'}         || 38; #L-ARM-C OUTPUT PIN
+  $self->{'arm_leftoc_in'}      = $args{'-arm_leftoc_in'}         || 'A12'; #L-ARM-OC INPUT PIN
 
   $self->{'hand_leftud_type'}   = $args{'-hand_leftud_type'}      || $ANALOG_IN;
   $self->{'hand_leftud'}        = $args{'-hand_leftud'}           || readAnalog($self,'hand_leftud');
   $self->{'hand_leftud_min'}    = $args{'-hand_leftud_min'}       || 0;
   $self->{'hand_leftud_max'}    = $args{'-hand_leftud_max'}       || 0;
-  #$self->{'hand_leftu_out'}     = $args{'-hand_leftu_out'}        || ; #L-HAND-U OUTPUT PIN
-  #$self->{'hand_leftd_out'}     = $args{'-hand_leftd_out'}        || ; #L-HAND-D OUTPUT PIN
-  #$self->{'hand_leftud_in'}     = $args{'-hand_leftud_in'}        || ; #L-HAND-UD INPUT PIN
+  $self->{'hand_leftu_out'}     = $args{'-hand_leftu_out'}        || 42; #L-HAND-U OUTPUT PIN
+  $self->{'hand_leftd_out'}     = $args{'-hand_leftd_out'}        || 44; #L-HAND-D OUTPUT PIN
+  $self->{'hand_leftud_in'}     = $args{'-hand_leftud_in'}        || 'A11'; #L-HAND-UD INPUT PIN
 
   $self->{'arm_rightoc_type'}   = $args{'-arm_rightoc_type'}      || $ANALOG_IN;
   $self->{'arm_rightoc'}        = $args{'-arm_rightoc'}           || readAnalog($self,'arm_rightoc');
   $self->{'arm_rightoc_min'}    = $args{'-arm_rightoc_min'}       || 0;
   $self->{'arm_rightoc_max'}    = $args{'-arm_rightoc_max'}       || 0;
-  #$self->{'arm_righto_out'}     = $args{'-arm_righto_out'}       || ; #R-ARM-O OUTPUT PIN
-  #$self->{'arm_rightc_out'}     = $args{'-arm_rightc_out'}       || ; #R-ARM-C OUTPUT PIN
-  #$self->{'arm_rightoc_in'}     = $args{'-arm_rightoc_in'}       || ; #R-ARM-OC INPUT PIN
+  $self->{'arm_righto_out'}     = $args{'-arm_righto_out'}        || 32; #R-ARM-O OUTPUT PIN
+  $self->{'arm_rightc_out'}     = $args{'-arm_rightc_out'}        || 30; #R-ARM-C OUTPUT PIN
+  $self->{'arm_rightoc_in'}     = $args{'-arm_rightoc_in'}        || 'A6'; #R-ARM-OC INPUT PIN
 
   $self->{'hand_rightud_type'}  = $args{'-hand_rightud_type'}     || $ANALOG_IN;
   $self->{'hand_rightud'}       = $args{'-hand_rightud'}          || readAnalog($self,'hand_rightud');
   $self->{'hand_rightud_min'}   = $args{'-hand_rightud_min'}      || 0;
   $self->{'hand_rightud_max'}   = $args{'-hand_rightud_max'}      || 0;
-  #$self->{'hand_rightu_out'}    = $args{'-hand_rightu_out'}       || ; #R-HAND-U OUTPUT PIN
-  #$self->{'hand_rightd_out'}    = $args{'-hand_rightd_out'}       || ; #R-HAND-D OUTPUT PIN
-  #$self->{'hand_rightud_in'}    = $args{'-hand_rightoc_in'}       || ; #R-HAND-OC INPUT PIN
-
-  $self->{'serial_port'}        = $args{'-serial_port'}           || undef;
+  $self->{'hand_rightu_out'}    = $args{'-hand_rightu_out'}       || 26; #R-HAND-U OUTPUT PIN
+  $self->{'hand_rightd_out'}    = $args{'-hand_rightd_out'}       || 28; #R-HAND-D OUTPUT PIN
+  $self->{'hand_rightud_in'}    = $args{'-hand_rightoc_in'}       || 'A7'; #R-HAND-OC INPUT PIN
 
   #if ($self->{'debug'}){
   # #display default sensor values
@@ -167,17 +179,6 @@ sub new {
   # }
   #}
 
-  print "\tInitializing serial port communication\n" if $self->{'debug'};
-  if ($self->{'serial_port'}){ #exit with an error if a serial port is not defined
-  #  $self->{'serial'} = Device::Firmata->open( $self->{'serial_port'} ) || die "Could not connect to Firmata serial port\n";
-  #  if ( $self->{'debug'} ){
-  #   foreach my $key ( keys(%{$self->{'serial'}}) ){
-  #     print "\t\t$key\n";
-  #   }
-  # }
-  } else {
-    die "ERROR: Serial port not specified\n";
-  }
   print "init>\n" if $self->{'debug'};
   init_sensors($self);  #initialize all output sensors to their default values
   print "<init\n" if $self->{'debug'};
