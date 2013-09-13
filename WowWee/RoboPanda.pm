@@ -1,6 +1,6 @@
 ############################################################
 # Perl module for interfacing the WowWee Robopanda Robot
-# Using Arduino Mega with StandardFirmata sketch
+# Using Arduino Mega with Device::Firmata and the StandardFirmata sketch
 ############################################################
 
 package WowWee::RoboPanda;
@@ -16,16 +16,108 @@ use Device::Firmata;
 $|=1;
 $Device::Firmata::DEBUG = 1;
 
-our $VERSION      = 1.00;
 our @ISA          = qw(Exporter);
 our @EXPORT       = ();
 our @EXPORT_OK    = qw();
 our %EXPORT_TAGS  = ();
 
-my $ANALOG_IN   = 'ANALOG_IN';  #Analog input
-my $DIGITAL_IN  = 'DIGITAL_IN';  #Digital input
-my $DIGITAL_OUT = 'DIGITAL_OUT';  #Digital output
-my $PWM         = 'PWM';  #PWM output
+my $ANALOG_IN     = 'ANALOG_IN';  #Analog input
+my $DIGITAL_IN    = 'DIGITAL_IN';  #Digital input
+my $DIGITAL_OUT   = 'DIGITAL_OUT';  #Digital output
+my $PWM           = 'PWM';  #PWM output
+
+#####################################################################
+#START PERLDOC
+
+=pod
+
+=head1 NAME
+
+WowWee::Robopanda - Perl interface to a WowWee Robopanda robot via Firmata
+
+=head1 VERSION
+
+Version 0.01
+
+=head1 DESCRIPTION
+
+This module facilitates controlling a WowWee Robopanda anamatronic toy via Perl (using Device::Firmata).
+This module relies on the Device::Firmata module to communicate with a microcontroller that is connected to the Robopanda's sensors (motors, position sensors, leds, etc...)
+
+=head1 SYNOPSIS
+
+  use strict;
+  use warnings;
+  use WowWee::RoboPanda;
+
+  my $SerialPort = 'COM14';
+  my $robopanda = WowWee::RoboPanda->new(
+    -debug          => 1,
+    -debug_serial   => 0,
+    -serial_port    => $SerialPort,
+  );
+
+  $robopanda->headlr(1); #move headlr to 1% (far left)
+  $robopanda->headlr(100); #move headlr to 100% (far right)
+
+=head1 METHODS
+
+=head2 new
+
+Create and initialize a WowWee::Robopanda object
+
+=head3 OPTIONS
+
+The following options can be passed to the new() method (to override the default parameters)
+
+=over
+
+=item -debug
+
+Enable/Disable debugging messages
+
+=item -debug_serial
+
+Enable/Disable Device::Firmata/serial communication debugging messages
+
+=item -serial_port (REQUIRED)
+
+The serial port Device::Firmata will use to communicate with the microcontroller.
+
+
+=back
+
+=head2 init_sensors
+
+Set all output sensors to default state value (home)
+
+=head2 updateState
+
+Read all analog and digital sensors and update state variables with current values
+
+=head2 readAnalog
+
+Read Analog sensor value and assign results to $self->{$sensor}
+
+=head2 readDigital
+
+=head2 writeAnalog
+
+=head2 writeDigital
+
+=head2 headlr
+
+=head2 headud
+
+=head2 checkReqPos
+
+=head2 home
+
+Move to home position
+
+=cut
+#END PERLDOC
+#####################################################################
 
 sub new {
   #create a new RoboPanda object with specifed sensor values, or use default values if not specified
@@ -34,12 +126,17 @@ sub new {
 
   $self->{'debug'}              = $args{'-debug'}                 || 0;
   print "WowWee::RoboPanda->new()...\n" if $self->{'debug'};
-	
-	$self->{'serial_port'}        = $args{'-serial_port'}           || undef;
-	
-	print "\tInitializing serial port communication\n" if $self->{'debug'};
-  if ($self->{'serial_port'}){ #exit with an error if a serial port is not defined
-    $self->{'serial'} = Device::Firmata->open( $self->{'serial_port'} ) || die "Could not connect to Firmata via serial\n";
+
+  $self->{'debug_serial'}       = $args{'-debug_serial'}          || 0;
+  $self->{'serial_port'}        = $args{'-serial_port'}           || undef;
+
+  print "\tInitializing serial port communication\n" if $self->{'debug'};
+  if ( $self->{'serial_port'} ){ #exit with an error if a serial port is not defined
+    if ( $self->{'debug_serial'} ){
+      $self->{'serial'} = Device::Firmata->open( $self->{'serial_port'} ) || warn "Could not connect to Firmata via serial\n";
+    } else {
+      $self->{'serial'} = Device::Firmata->open( $self->{'serial_port'} ) || die "Could not connect to Firmata via serial\n";
+    }
   #  if ( $self->{'debug'} ){
   #   foreach my $key ( keys(%{$self->{'serial'}}) ){
   #     print "\t\t$key\n";
@@ -224,6 +321,8 @@ sub readAnalog {
   #read Analog sensor value and assign results to $self->{$sensor}
   my ($self, $sensor) = @_;
   print "\tWowWee::RoboPanda->readAnalog($sensor)...\n" if $self->{'debug'};
+	my $value = 0;
+  print "\t$sensor : $value\n" if $self->{'debug'};
   #return $self->{$sensor};
 }
 
@@ -231,7 +330,9 @@ sub readDigital {
   #read Digital sensor and assign results to $self->{$sensor}
   my ($self, $sensor) = @_;
   print "\tWowWee::RoboPanda->readDigital($sensor)...\n" if $self->{'debug'};
-  return undef;
+  my $value = 0;
+  print "\t$sensor : $value\n" if $self->{'debug'};
+  #return $self->{$sensor};
 }
 
 sub writeAnalog {
