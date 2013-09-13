@@ -6,6 +6,7 @@ my $SerialPort = 'COM14';
 
 my $robopanda = WowWee::RoboPanda->new(
     -debug          => 1,
+    -debug_serial		=> 1,
     -serial_port    => $SerialPort,
   );
 
