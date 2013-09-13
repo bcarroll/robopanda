@@ -30,13 +30,14 @@ Purpose:
     There is also a battery compartment in the back that holds 4 AA batterys (6v).
     
     Input sensors:
-      accelerometer         - Left side
-      ball switch           - Back
-      capacitive touch      - Hands, Feet, Back, Chest, Back of head
-      microphone            - Chest
+      Accelerometer         - Left side
+      Ball switch           - Back
+      Capacitive touch      - Hands, Feet, Back, Chest, Back of head
+      Microphone            - Chest
       RFID reader           - Chest
-      infra-red detector    - Left eye.
-      potentiometer         - Motor location encoder
+      Infra-red detector    - Left eye
+      Potentiometer         - Motor location encoder
+      Limit switches        - Eye brows and Ears
     
     Output sensors:
       LED                   - Hands, Eyes, Chest.  
@@ -55,12 +56,12 @@ References:
     <a href="http://www.robocommunity.com/">RoboCommunity</a> - The Premier WowWee Robot Community
   </li>
   <li>
-    <a href="http://dx.com/c/electrical-tools-499/arduino-scm-supplies-436?Utm_rid=24251910&Utm_source=affiliate">Deal Extreme (DX)</a> - Cheap Arduino and electronic components - Free Shipping!
+    <a href="http://dx.com/c/electrical-tools-499/arduino-scm-supplies-436?Utm_rid=24251910&Utm_source=affiliate">Deal Extreme (DX)</a> - Cheap Arduino and electronic components - Free Shipping! (Direct from China)
   </li>
 <ul>
 
-<a href="http://dx.com/p/118037?Utm_rid=24251910&Utm_source=affiliate">
-  <img src="http://img.dxcdn.com/productimages/sku_118037_3_small.jpg" />
+<a href="http://dx.com/p/184830?Utm_rid=24251910&Utm_source=affiliate">
+  <img src="http://img.dxcdn.com/productimages/sku_184830_1_small.jpg" />
   <br />
-  Arduino Nano V3.0 Compatible - ATmega328 (Free Shipping)
+  Arduino Mega 2560 Compatible (Free Shipping)
 </a>
