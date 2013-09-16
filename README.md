@@ -1,8 +1,9 @@
 Interfacing WowWee RoboPanda
 =========
 
-Introduction:
+Introduction: 
 
+    From WowWee's website:
     Robopanda™ is a playful and talkative interactive friend. 
     With his engaging personality and bright animated eyes, Robopanda™ loves to share stories and jokes, play games, 
     sing songs and talk with children of all ages. He’s a fun-filled robotic bear who can even crawl on all fours 
