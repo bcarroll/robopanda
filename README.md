@@ -24,7 +24,7 @@ Introduction:
 Purpose:
 
     The WowWee Robopanda is a great "off the shelf" robot for building your own robot.  This is an attempt to interface
-    RoboPanda using <a href="http://arduino.cc">Arduino</a>, <a href="http://firmata.org">Firmata</a>, and <a href="http://www.perl.org/">Perl</a>, and eventually adding a <a href="http://www.raspberrypi.org/">Raspberry Pi</a> and <a href="http://www.ros.org/">ROS</a> for autonomous control.
+    RoboPanda using <a href="http://arduino.cc">Arduino</a>, <a href="http://firmata.org">Firmata</a> or <a href="http://code.google.com/p/poark/">Poark</a>, and <a href="http://www.perl.org/">Perl</a>, and eventually adding a <a href="http://www.raspberrypi.org/">Raspberry Pi</a> and <a href="http://www.ros.org/">ROS</a> for autonomous control.
     
     RoboPanda has battery compartments in the legs that hold 3 C batteries each (9v) and has a good mix of input and output sensors.
     There is also a battery compartment in the back that holds 4 AA batterys (6v).
@@ -43,7 +43,7 @@ Purpose:
       LED                   - Hands, Eyes, Chest.  
       Speaker               - Chest
       DC Motor              - Hips, Shoulders, Upper arms, Head, Ears, Eye brows
-      InfraRed emitter			- Nose
+      InfraRed emitter      - Nose
 
       
 References:
