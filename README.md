@@ -24,10 +24,10 @@ Introduction:
 Purpose:
 
     The WowWee Robopanda is a great "off the shelf" robot for building your own robot.  This is an attempt to interface
-    RoboPanda using an Arduino Mega with Firmata or Poark, Perl, and eventually adding Raspberry Pi and ROS for autonomous control.
+    RoboPanda using an Arduino Mega with Firmata or Poark, Perl, Raspberry Pi and ROS for autonomous control.
     
-    RoboPanda has battery compartments in the legs that hold 3 C batteries each (9v) and has a good mix of input and output sensors.
-    There is also a battery compartment in the back that holds 4 AA batterys (6v).
+    RoboPanda has battery compartments in the legs that hold 3 C batteries each (9v) and a good mix of input and output
+    sensors.  There is also a battery compartment in the back that holds 4 AA batteries (6v).
     
     Input sensors:
       Accelerometer         - Left side
