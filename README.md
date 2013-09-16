@@ -24,7 +24,7 @@ Introduction:
 Purpose:
 
     The WowWee Robopanda is a great "off the shelf" robot for building your own robot.  This is an attempt to interface
-    RoboPanda using <a href="http://arduino.cc">Arduino</a>, <a href="http://firmata.org">Firmata</a> or <a href="http://code.google.com/p/poark/">Poark</a>, and <a href="http://www.perl.org/">Perl</a>, and eventually adding a <a href="http://www.raspberrypi.org/">Raspberry Pi</a> and <a href="http://www.ros.org/">ROS</a> for autonomous control.
+    RoboPanda using an Arduino Mega with Firmata or Poark, Perl, and eventually adding Raspberry Pi and ROS for autonomous control.
     
     RoboPanda has battery compartments in the legs that hold 3 C batteries each (9v) and has a good mix of input and output sensors.
     There is also a battery compartment in the back that holds 4 AA batterys (6v).
@@ -47,7 +47,28 @@ Purpose:
 
       
 References:
+<ul>
+  <li>
+    <a href="http://arduino.cc">Arduino</a>
+  </li>
+  <li>    
+    <a href="http://firmata.org">Firmata</a>
+  </li>
+  <li>    
+    <a href="http://code.google.com/p/poark/">Poark</a>
+  </li>
+  <li>    
+    <a href="http://www.perl.org/">Perl</a>
+  </li>
+  <li>    
+    <a href="http://www.raspberrypi.org/">Raspberry Pi</a>
+  </li>
+  <li>    
+    <a href="http://www.ros.org/">ROS</a> 
+  </li>
+</ul>
 
+Resources:
 <ul>
   <li>
     <a href="http://www.robocommunity.com/article/12977/RoboPanda-Disassembled---A-Look-Inside-This-Friendly-Robotic-Bear/?textpage=11">RoboPanda-Disassembled</a> - A Look Inside This Friendly Robotic Bear
