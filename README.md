@@ -1,6 +1,8 @@
 Interfacing WowWee RoboPanda
 =========
 
+<a href="http://www.wowwee.com/en/products/toys/robots/robotics/robocreatures/robopanda"><img src="http://www5.pcmag.com/media/images/164326-wowwee-robotics-robopanda-standing-arms-out.jpg" /></a><br />
+
 Introduction: 
 
     From WowWee's website:
@@ -74,7 +76,7 @@ Resources:
 <ul>
 
 <a href="http://dx.com/p/184830?Utm_rid=24251910&Utm_source=affiliate">
-  <img src="http://img.dxcdn.com/productimages/sku_184830_1_small.jpg" />
+  <img src="http://img.dxcdn.com/productimages/sku_184830_1_small.jpg" alt="DX.com Arduino Mega Clone" />
   <br />
   Arduino Mega 2560 Compatible (Free Shipping)
 </a>
