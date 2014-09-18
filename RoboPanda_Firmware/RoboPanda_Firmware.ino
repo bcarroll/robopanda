@@ -1,5 +1,6 @@
 /*
  * WowWee RoboPanda toy robot Arduino Mega firmware
+ * Refer to RoboPanda_ArduinoMega.h for Arduino pin to RoboPanda sensor information.
  */
 
 #include "Arduino.h"
