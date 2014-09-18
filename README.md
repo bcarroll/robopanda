@@ -1,11 +1,10 @@
 Interfacing WowWee RoboPanda
 =========
-
-<div style="align:center;">
+<center>
     <a href="http://www.wowwee.com/en/products/toys/robots/robotics/robocreatures/robopanda">
     	<img src="http://www5.pcmag.com/media/images/164326-wowwee-robotics-robopanda-standing-arms-out.jpg" />
     </a>
-</div>
+</center>
 
 Introduction: 
 
