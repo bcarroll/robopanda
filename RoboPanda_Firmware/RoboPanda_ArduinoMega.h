@@ -20,8 +20,8 @@
 #define HEADLR_PIN 10                     // HEAD-LR INPUT PIN
 
 // Head Up/Down
-#define HEADU_OUT 34                      // HEAD-U OUTPUT PIN
-#define HEADD_OUT 36                      // HEAD-D OUTPUT PIN
+#define HEADU_OUT 35                      // HEAD-U OUTPUT PIN
+#define HEADD_OUT 37                      // HEAD-D OUTPUT PIN
 #define HEADUD_PIN 13                     // HEAD-UD INPUT PIN
 
 // Eyebrow Up/Down
@@ -60,28 +60,28 @@
 #define LEG_RIGHTFB_PIN 15                // R-LEG-FB INPUT PIN
 
 // Left Leg Forward/Backward
-#define LEG_LEFTF_OUT 46                  // L-LEG-F OUTPUT PIN
-#define LEG_LEFTB_OUT 48                  // L-LEG-B OUTPUT PIN
+#define LEG_LEFTF_OUT 47                  // L-LEG-F OUTPUT PIN
+#define LEG_LEFTB_OUT 49                  // L-LEG-B OUTPUT PIN
 #define LEG_LEFTFB_PIN 14                 // L-LEG-FB INPUT PIN
 
 // Left Arm Open/Close
-#define ARM_LEFTO_OUT 40                  // L-ARM-O OUTPUT PIN
-#define ARM_LEFTO_OUT 38                  // L-ARM-C OUTPUT PIN
+#define ARM_LEFTO_OUT 41                  // L-ARM-O OUTPUT PIN
+#define ARM_LEFTC_OUT 39                  // L-ARM-C OUTPUT PIN
 #define ARM_LEFTOC_PIN 12                 // L-ARM-OC INPUT PIN
 
 // Left Hand Up/Down
-#define HAND_LEFTU_OUT 42                 // L-HAND-U OUTPUT PIN
-#define HAND_LEFTD_OUT 44                 // L-HAND-D OUTPUT PIN
+#define HAND_LEFTU_OUT 43                 // L-HAND-U OUTPUT PIN
+#define HAND_LEFTD_OUT 45                 // L-HAND-D OUTPUT PIN
 #define HAND_LEFTUD_PIN 11                // L-HAND-UD INPUT PIN
 
 // Right Arm Open/Close
-#define ARM_RIGHTO_OUT 32                 // R-ARM-O OUTPUT PIN
-#define ARM_RIGHTC_OUT 30                 // R-ARM-C OUTPUT PIN
+#define ARM_RIGHTO_OUT 31                 // R-ARM-O OUTPUT PIN
+#define ARM_RIGHTC_OUT 33                 // R-ARM-C OUTPUT PIN
 #define ARM_RIGHTOC_PIN 6                 // R-ARM-OC INPUT PIN
 
 // Right Hand Up/Down
-#define HAND_RIGHTU_OUT 26                // R-HAND-U OUTPUT PIN
-#define HAND_RIGHTD_OUT 28                // R-HAND-D OUTPUT PIN
+#define HAND_RIGHTU_OUT 27                // R-HAND-U OUTPUT PIN
+#define HAND_RIGHTD_OUT 29                // R-HAND-D OUTPUT PIN
 #define HAND_RIGHTUD_PIN 7                // R-HAND-OC INPUT PIN
 
 #endif
