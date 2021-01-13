@@ -28,8 +28,8 @@ Introduction:
 
 Purpose:
 
-    The WowWee Robopanda is a great "off the shelf" robot for building your own robot.  This is an attempt to interface
-    RoboPanda using an Arduino Mega, Perl, and a PC (Raspberry Pi).
+    The WowWee Robopanda is a great "off the shelf" robot for building your own robot.
+    This repository contains my attempt to control/interface the RoboPanda using various widely available electronic components (Arduino, Raspberry Pi, etc...)
     
     RoboPanda has battery compartments in the legs that hold 3 C batteries each (9v) and a good mix of input and output
     sensors.  There is also a battery compartment in the back that holds 4 AA batteries (6v).
