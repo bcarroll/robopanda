@@ -72,7 +72,4 @@ Resources:
   <li>
     <a href="http://www.robocommunity.com/">RoboCommunity</a> - The Premier WowWee Robot Community
   </li>
-  <li>
-    <a href="http://dx.com/c/electrical-tools-499/arduino-scm-supplies-436?Utm_rid=24251910&Utm_source=affiliate">Deal Extreme (DX)</a> - Cheap Arduino and electronic components - Free Shipping! (Direct from China)
-  </li>
 <ul>
