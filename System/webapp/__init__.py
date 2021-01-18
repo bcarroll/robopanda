@@ -2,11 +2,11 @@ from flask import Flask, render_template, request, redirect
 from flask_bootstrap import Bootstrap
 from datetime import datetime
 
-app = Flask(__name__)
-Bootstrap(app)
+webapp = Flask(__name__)
+Bootstrap(webapp)
 
-@app.route('/')
-def index():
-  return render_template('index.html')
+#@webapp.route('/')
+#def index():
+#  return render_template('index.html')
 
 

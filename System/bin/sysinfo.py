@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
+"""
+This script displays some system information on an I2C connected OLED display
+"""
 
+import threading
 from time import sleep
 import psutil
 import Adafruit_SSD1306
@@ -16,36 +20,37 @@ height = disp.height
 image = Image.new('1', (width, height))
 draw = ImageDraw.Draw(image)
 draw.rectangle((0,0,width,height), outline=0, fill=0)
-
-padding = -2
-top = padding
-bottom = height-padding
-x=0
-
 font = ImageFont.load_default()
 
-while True:
-  draw.rectangle((0,0,width,height), outline=0, fill=0)
+def get_net_info(if_name):
+  return [ip.address for ip in psutil.net_if_addrs()[if_name] if ip.family.value==2]
 
-  #cmd = "hostname -I | cut -d\' \' -f1"
-  #IP = subprocess.check_output(cmd, shell=True).decode('utf-8')
-  #cmd = "top -bn1 | grep load | awk '{printf $11}' | tr -d ','"
-  #CPU = float(subprocess.check_output(cmd, shell=True).decode('utf-8'))
-  #cmd = "free -m | awk 'NR==2{printf \"%.2f%%\", $3*100/$2 }'"
-  #RAM = subprocess.check_output(cmd, shell=True).decode('utf-8')
-  #cmd = "df -h | awk '$NF==\"/\" {printf \"%s\",$5}'"
-  #DISK = subprocess.check_output(cmd, shell=True).decode('utf-8')
-  IP = ""
-  CPU = psutil.cpu_percent()
-  RAM = psutil.phymem_usage().percent
-  DISK = psutil.disk_usage('/').percent
+def main_thread():
+  while True:
+    draw.rectangle((0,0,width,height), outline=0, fill=0)
+    WLAN = get_net_info('wlan0')[0]
+    CPU = psutil.cpu_percent()
+    RAM = psutil.virtual_memory().percent
+    DISK = psutil.disk_usage('/').percent
 
-  draw.text((x,top),    "IP:   " + str(IP), font=font, fill=255)
-  draw.text((x,top+8),  "CPU:  " + str(CPU) + '%', font=font, fill=255)
-  draw.text((x,top+16), "RAM:  " + str(RAM), font=font, fill=255)
-  draw.text((x,top+24), "DISK: " + str(DISK), font=font, fill=255)
+    draw.text((0,-2), "IP:  " + str(WLAN), font=font, fill=255)
+    draw.text((0,6), "CPU:  " + str(CPU), font=font, fill=255)
+    draw.text((0,14), "RAM:  " + str(RAM), font=font, fill=255)
+    draw.text((0,22), "DISK: " + str(DISK), font=font, fill=255)
 
-  disp.image(image)
-  disp.display()
+    disp.image(image)
+    disp.display()
+    sleep(.25)
 
-  sleep(.1)
+sysinfo_thread = threading.Thread(target=main_thread, daemon=True)
+
+if __name__ == '__main__':
+  """
+  This simple test:
+   - starts the main_thread
+   - lets it run for 10 seconds
+   - forcefully kills the thread when the script exits
+  """
+  sysinfo_thread.start()
+  sleep(10)
+ 
