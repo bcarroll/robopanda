@@ -1,5 +1,5 @@
 # Interfacing WowWee RoboPanda
-===
+
 <a href="http://www.wowwee.com/en/products/toys/robots/robotics/robocreatures/robopanda">
   <img src="RoboPanda.jpg" />
 </a>
