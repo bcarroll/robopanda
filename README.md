@@ -62,6 +62,7 @@ References:
   </li>
 </ul>
 
+<!--
 Resources:
 <ul>
   <li>
@@ -71,3 +72,4 @@ Resources:
     <a href="http://www.robocommunity.com/">RoboCommunity</a> - The Premier WowWee Robot Community
   </li>
 <ul>
+-->
