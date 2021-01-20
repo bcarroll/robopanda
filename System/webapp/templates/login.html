@@ -1,0 +1,22 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="container">
+	<form action="/login" method="post">
+		<table class="table">
+			<tr>
+        		<td>Username</td><td><input type=text name=username></input></td>
+        	</tr>
+        	<tr>
+        		<td>Password</td><td><input type=password name=password></input></td>
+        	</tr>
+			<tr>
+        		<td colspan="2">
+        			<input type=submit value=Login></input>
+        		</td>
+        	</tr>
+    	</table>
+    </form>
+</div>
+{% endblock content %}
