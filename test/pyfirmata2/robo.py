@@ -4,94 +4,89 @@ from config import Configuration
 from pyfirmata import ArduinoMega, util
 from time import sleep
 
+class RoboPandaServo():
+    def __init__(self, board, analog_pin, digital_pin1, digital_pin2, min_val, max_val, name=None, initialize_loop=5, initialize_delay=.1):
+        """
+        RoboPandaServo object constructor
+
+        :param board: pyfirmata object
+        :param analog_pin: Analog pin number (middle wire of the potentiometer attached to the motor)
+        :param digital_pin1: Digital pin number which controls motor direction 1
+        :param digital_pin2: Digital pin number which controls motor direction 2
+        """
+        self.analog           = analog_pin
+        self.digital1         = digital_pin1
+        self.digital2         = digital_pin2
+        self.min              = min_val
+        self.max              = max_val
+        self.servo            = board.get_pin('a:' + str(self.analog) + ':i')
+        self.initialize_loop  = initialize_loop
+        self.initialize_delay = initialize_delay
+        if name is not None:
+            self.name = name
+        else:
+            self.name = 'A' + analog_pin
+
+    def position(self):
+        """ Get the current position (0-100) of the RoboPanda "Servo" motor """
+        try:
+            return ( (self.val() - self.min) / (self.max - self.min) ) * 100
+        except ZeroDivisionError as zde:
+            logging.error('Unable to get position of %s.  Verify the min and max values in config.py' % self.name)
+
+    def val(self):
+        """ Get the current value of the analog_pin """
+        # This is done via a loop in-case the value is not available on the first request (seems to take at least 1 iteration the first time through)
+        value = None
+        loop  = 0
+        while loop < self.initialize_loop:
+            try:
+                value = int(self.servo.value * 1000)
+                if value is not None:
+                    return value
+                else:
+                    logging.debug('%s.value returned None [%s] retrying' % (str(self.name), str(loop)))
+                loop += 1
+                sleep(self.initialize_delay)
+            except:
+                pass
+        return value
+
 class RoboPanda():
     port = {}
     def __init__(self):
         logging.info('Initializing RoboPanda...')
-        self.panda = ArduinoMega('/dev/ttyACM0')
-        if self.panda.name:
-            logging.info('Connected to RoboPanda on %s' % self.panda.name)
+        self.board = ArduinoMega('/dev/ttyACM0')
+        if self.board.name:
+            logging.info('Connected to RoboPanda on %s' % self.board.name)
         else:
             logging.error('Error connecting to RoboPanda')
-        it = util.Iterator(self.panda)
+        it = util.Iterator(self.board)
         it.start()
         for key in Configuration:
-            if key.endswith('analog_pin'):
-                rkey = key.replace('_analog_pin', '')
-                logging.debug('Initializing %s [A%s]' % (rkey, str(Configuration[key])))
-                self.port[rkey] = {}
-                self.port[rkey]['port'] = self.panda.get_pin('a:' + str(Configuration[key]) + ':i')
-                self.port[rkey]['pin'] = 'A%s' % str(Configuration[key])
-                self.port[rkey]['min'] = Configuration[rkey + '_min']
-                self.port[rkey]['max'] = Configuration[rkey + '_max']
-                self.val(rkey) # Get initial value from port to make sure it is alive... not sure why this is needed, but without it the first several values are None
-
-    def shutdown(self):
-        self.panda.shutdown()
-
-    def map_range(value, range1Min, range1Max, range2Min, range2Max):
-        # Determine the 'width' of each range
-        range1 = range1Max - range1Min
-        range2 = range2Max - range2Min
-        # Map range1 into a 0-1 range (float)
-        mappedValue = float(value - range1Min) / float(range1)
-        # Convert the 0-1 range into a value in range2
-        return range2Min + (mappedValue * range2)
-
-    def val(self, port_name):
-        value = None
-        loop  = 0
-        while loop < 5:
-            try:
-                value = self.port[port_name]['port'].value
-                if value is not None:
-                    return value
-                else:
-                    logging.debug('%s value returned None [%s] retrying' % (str(port_name), str(loop)))
-                loop += 1
-                sleep(.1)
-            except:
-                pass
-        return value
-
-    def read(self, port_name):
-        value = None
-        loop  = 0
-        while loop < 5:
-            try:
-                value = self.port[port_name]['port'].read()
-                if value is not None:
-                    return value
-                else:
-                    logging.debug('%s value returned None [%s] retrying' % (str(port_name), str(loop)))
-                loop += 1
-                sleep(.1)
-            except:
-                pass
-        return value
-
+            if Configuration[key]['type'] == 'RoboPandaServo':
+                logging.debug('Initializing %s [A%s]' % (Configuration[key]['description'], str(Configuration[key]['analog_pin'])))
+                self.port[key] = RoboPandaServo(self.board, Configuration[key]['analog_pin'], Configuration[key]['digital_pin1'], Configuration[key]['digital_pin2'], Configuration[key]['min'], Configuration[key]['max'], name=key)
+                self.port[key].val()
 
     def debug(self):
+        """ Debug log all ports and values """
         for port in self.port:
-            logging.debug('Port: %s (min: %s - max: %s) [%s]' % (port, self.port[port]['min'], self.port[port]['max'], self.val(port)))
-
-
-#try:
-#    while True:
-#        time.sleep(.1)
-#        value, time_stamp = board.analog_read(pin)
-#except KeyboardInterrupt:
-#    my_board.shutdown()
-#    sys.exit(0)
-
+            if Configuration[port]['type'] == 'RoboPandaServo':
+                logging.debug('Port: %s (min: %s - max: %s) position: %s, val: %s' % (port, self.port[port].min, self.port[port].max, self.port[port].position(), self.port[port].val()))
+            else:
+                logging.debug('Port: %s not configured' % port)
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
     panda = RoboPanda()
+    it = util.Iterator(panda)
+    it.start()
     try:
         while True:
             panda.debug()
             sleep(1)
+            logging.debug('\n----------------------------------------------------------------------------\n')
     except KeyboardInterrupt:
         sys.exit(0)
 

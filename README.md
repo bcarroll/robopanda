@@ -64,18 +64,11 @@ References:
   </li>
 </ul>
 
-<!--
-Resources:
-<ul>
-  <li>
-    <a href="http://www.robocommunity.com/article/12977/RoboPanda-Disassembled---A-Look-Inside-This-Friendly-Robotic-Bear/?textpage=11">RoboPanda-Disassembled</a> - A Look Inside This Friendly Robotic Bear
-  </li>
-  <li>
-    <a href="http://www.robocommunity.com/">RoboCommunity</a> - The Premier WowWee Robot Community
-  </li>
-<ul>
--->
-
-
 ## Raspberry Pi dependencies
-`sudo apt-get install libatlas-base-dev`
+`sudo apt-get install libatlas-base-dev python3-dev`
+
+## Python dependencies
+`python3 -m pip install -r requirements.txt`
+
+## Arduino firmware
+Upload the Standard Firmata example sketch to the Arduino Mega
