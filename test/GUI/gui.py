@@ -1,4 +1,3 @@
-from os import O_RANDOM
 import sys, random
 import pygame
 from  pygame.locals import *
