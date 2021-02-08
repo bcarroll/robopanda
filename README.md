@@ -50,6 +50,10 @@ RoboPanda has battery compartments in the legs that hold 3 C batteries each (9v)
 | Output | DC Motor             | Hips, Shoulders, Upper arms, Head, Ears, Eye brows |
 | Output | InfraRed emitter     | Nose |
 
+# Main PCB  
+<a href="RoboPanda_Pinout.png">
+  <img src="RoboPanda_Pinout.png" />
+</a>
 
 References:
 <ul>
