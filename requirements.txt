@@ -10,7 +10,7 @@ simplepam
 wheel
 psutil
 Pillow
-opencv-contrib-python==4.1.0.25
+opencv-contrib-python==4.2.0.32
 imutils
 numpy
 pyttsx3
