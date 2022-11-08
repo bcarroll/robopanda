@@ -9,23 +9,30 @@
 ## Introduction:
 
 *From WowWee's website:*
-    `Robopanda™ is a playful and talkative interactive friend.
+    Robopanda™ is a playful and talkative interactive friend.  
+    
     With his engaging personality and bright animated eyes, Robopanda™ loves to share stories and jokes, play games,
     sing songs and talk with children of all ages. He’s a fun-filled robotic bear who can even crawl on all fours
-    and return to a sitting position.
+    and return to a sitting position.  
+    
     Designed to work without a remote control, Robopanda™ is controlled directly by touch and sound.
+    
     You'll experience hours of delight and entertainment playing with him and his interactive cartridge-based content.
+    
     Training mode: Learn how to play with him while he guides you through his many features.
+    
     Friend mode: Interact with his many conversations and enjoy his jokes.
+    
     Menu mode: Robopanda™ will tell you stories, play games with you and even sing you a song or two!
+    
     You can even teach him tricks that he will perform for you.
-    Realistic actions and interactive personality
-    Direct touch sensor and sound control
-    Interactive stories and games
-    Advanced artificial intelligence and awareness
-    Recognizes and talks to his own little toy panda (included)
-    Includes two Activity and Story cartridges
-    Equipped with safety sensors`
+      - Realistic actions and interactive personality
+      - Direct touch sensor and sound control
+      - Interactive stories and games
+      - Advanced artificial intelligence and awareness
+      - Recognizes and talks to his own little toy panda (included)
+      - Includes two Activity and Story cartridges
+      - Equipped with safety sensors
 
 ## Purpose:
 
